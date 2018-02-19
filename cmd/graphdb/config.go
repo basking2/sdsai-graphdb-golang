@@ -1,9 +1,8 @@
 package main
 
+import (
+  "github.com/graymeta/stow"
+)
 type config struct {
-  Storage struct {
-    Type string
-    Path string
-  }
-
+  Storage stow.ConfigMap
 }
