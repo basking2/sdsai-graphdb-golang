@@ -72,6 +72,10 @@ func NewGraphDb(name string, location stow.Location) (GraphDb, error) {
 	return GraphDb{location, container, logger}, nil
 }
 
+func (db *GraphDb) Close() error {
+	return db.location.Close()
+}
+
 // Put a node and return the storage ID.
 //
 // The storage ID is related to, but different than the node's name.

@@ -3,7 +3,9 @@ package main
 import (
   "github.com/BurntSushi/toml"
   "github.com/graymeta/stow"
-  _ "github.com/basking2/sdsai-graphdb-golang/pkg/sdsai/graphdb"
+
+  // Pull in so all types of storage load.
+  "github.com/basking2/sdsai-graphdb-golang/pkg/sdsai/graphdb"
 )
 
 func main() {
@@ -18,12 +20,17 @@ func main() {
   println("Got Type: ", c.Storage["type"])
   println("Got Path: ", c.Storage["path"])
 
-  st, err := stow.Dial(c.Storage["type"], c.Storage)
+  location, err := stow.Dial(c.Storage["type"], c.Storage)
   if err != nil {
     panic(err.Error())
   }
 
-  st.Close()
+  graphdb, err := graphdb.NewGraphDb("graphdb", location)
+  if err != nil {
+    panic(err.Error())
+  }
 
   serve(&c)
+
+  graphdb.Close()
 }
